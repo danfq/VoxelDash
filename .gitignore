@@ -1,0 +1,70 @@
+# Flutter & Dart specific files
+.dart_tool/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+.flutter-versions
+.pub-cache/
+.pub/
+
+# Build output directories
+build/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/App.framework
+ios/.symlinks
+ios/Pods
+android/.gradle
+android/app/build/
+android/.cxx/
+*.apk
+*.aab
+
+# Generated plugin files
+**/GeneratedPluginRegistrant.*
+
+# Dependency logs
+pubspec.lock
+
+# macOS specific files
+macos/Flutter/ephemeral/
+macos/build/
+
+# Web specific files
+web/.dart_tool/
+web/build/
+
+# Windows specific files
+windows/flutter/ephemeral/
+windows/build/
+
+# Linux specific files
+linux/flutter/ephemeral/
+linux/build/
+
+# Firebase files (if applicable)
+ios/GoogleService-Info.plist
+android/app/google-services.json
+
+# VS Code specific files
+.vscode/
+
+# IntelliJ IDEA specific files
+.idea/
+*.iml
+
+# Xcode specific files
+ios/Pods/
+ios/Podfile.lock
+ios/Runner.xcworkspace/
+xcuserdata/
+DerivedData/
+*.xcworkspace
+!default.xcworkspace
+
+# Temporary files and logs
+*.log
+*.tmp
+*.swp
+*.lock
+*.DS_Store
