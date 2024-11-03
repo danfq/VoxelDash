@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:future_progress_dialog/future_progress_dialog.dart';
+import 'package:get/route_manager.dart';
+import 'package:voxeldash/pages/server/info.dart';
+import 'package:voxeldash/util/data/api.dart';
 import 'package:voxeldash/util/widgets/buttons.dart';
 import 'package:voxeldash/util/widgets/input.dart';
 
@@ -8,6 +12,9 @@ class SearchPage extends StatelessWidget {
 
   ///Search Input Controller
   final TextEditingController _searchController = TextEditingController();
+
+  ///Bedrock Check
+  bool _isBedrock = false;
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +25,33 @@ class SearchPage extends StatelessWidget {
         //Search Input
         Input(
           controller: _searchController,
-          placeholder: "Search...",
+          placeholder: "Hostname or IP",
+          centerPlaceholder: true,
         ),
 
-        //Information
-        Text(
-          "You can enter a HostName or an IP.\nA Port isn't necessary.",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
-          ),
+        //Bedrock Check
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            StatefulBuilder(
+              builder: (context, setState) {
+                return Checkbox.adaptive(
+                  value: _isBedrock,
+                  onChanged: (status) {
+                    setState(() {
+                      _isBedrock = status ?? false;
+                    });
+                  },
+                );
+              },
+            ),
+            Text(
+              "Bedrock Server",
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          ],
         ),
 
         //Spacing
@@ -37,7 +61,21 @@ class SearchPage extends StatelessWidget {
         Buttons.elevatedIcon(
           text: "Get Information",
           icon: Ionicons.ios_search_outline,
-          onTap: () {},
+          onTap: () async {
+            //Server
+            final server = _searchController.text.trim();
+
+            //Check Server
+            if (server.isNotEmpty) {
+              //Load Data
+              Get.to(
+                () => ServerInfo(
+                  server: server,
+                  isBedrock: _isBedrock,
+                ),
+              );
+            }
+          },
         ),
       ],
     );
