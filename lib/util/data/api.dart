@@ -21,6 +21,13 @@ class API {
   ///Bedrock Endpoint
   static const String _bedrockEndpoint = "https://api.mcsrvstat.us/bedrock/3";
 
+  ///Mojang Skin API Endpoint
+  static const String _mojangEndpoint =
+      "https://sessionserver.mojang.com/session/minecraft/profile/";
+
+  ///Retry Options
+  static const _retryOptions = RetryOptions(maxAttempts: 5);
+
   ///Get Server Data
   ///
   ///Requires:
@@ -30,11 +37,8 @@ class API {
     required ServerType type,
     required String server,
   }) async {
-    //Retry Options
-    const retryOptions = RetryOptions(maxAttempts: 5);
-
     //Request
-    final request = await retryOptions.retry(
+    final request = await _retryOptions.retry(
       () => http.get(
         Uri.parse(
           type == ServerType.bedrock
@@ -67,6 +71,26 @@ class API {
     //Response Data
     final Map<String, dynamic> data = jsonDecode(request.body);
 
+    //Parse Players Data with Skin URLs
+    final players = await Future.wait(
+      (data["players"]?["list"] as List?)
+              ?.map<Future<PlayerData>>((item) async {
+            final uuid = item["uuid"];
+            final username = item["name"];
+
+            //Fetch Skin URL
+            final skinURL = uuid != null ? await _playerSkin(uuid) : null;
+
+            //Return Player Data
+            return PlayerData(
+              uuid: uuid,
+              username: username,
+              skinURL: skinURL ?? "",
+            );
+          }).toList() ??
+          <Future<PlayerData>>[],
+    );
+
     //Parse Data
     final parsedData = ServerData(
       hostname: data["hostname"] ?? "Undetermined",
@@ -80,17 +104,7 @@ class API {
       serverID: data["serverid"] ?? "Not Bedrock",
       eulaBlocked: data["eula_blocked"] ?? false,
       motd: data["motd"]?["html"][0] ?? "Undetermined",
-      players: (data["players"]?["list"] as List?)?.map<PlayerData>((item) {
-            //Player Data
-            final playerData = PlayerData(
-              uuid: item["uuid"],
-              username: item["name"],
-            );
-
-            //Return Player Data
-            return playerData;
-          }).toList() ??
-          <PlayerData>[],
+      players: players,
       maxPlayers: data["players"]?["max"] ?? 0,
       plugins: (data["plugins"] as List?)?.map<PluginData>((item) {
             //Plugin Data
@@ -118,5 +132,30 @@ class API {
 
     //Return Server Data
     return parsedData;
+  }
+
+  ///Fetch Player Skin URL based on UUIS
+  static Future<String?> _playerSkin(String uuid) async {
+    try {
+      //Mojang Request
+      final response = await _retryOptions.retry(
+        () => http.get(
+          Uri.parse("https://crafatar.com/renders/body/$uuid"),
+        ),
+      );
+
+      //Check for Success
+      if (response.statusCode == 200) {
+        //Return Skin URL
+        return "https://crafatar.com/renders/body/$uuid";
+      } else {
+        debugPrint("Failed to Fetch Player Profile: ${response.statusCode}");
+      }
+    } catch (error) {
+      debugPrint("Error Fetching Player Skin URL: $error.");
+    }
+
+    //Return Null by Default
+    return null;
   }
 }

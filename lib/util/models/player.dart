@@ -6,6 +6,13 @@ class PlayerData {
   ///Username
   final String username;
 
+  ///Skin
+  final String skinURL;
+
   ///PlayerData
-  PlayerData({required this.uuid, required this.username});
+  PlayerData({
+    required this.uuid,
+    required this.username,
+    required this.skinURL,
+  });
 }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:get/route_manager.dart';
+import 'package:voxeldash/pages/server/mods.dart';
+import 'package:voxeldash/pages/server/players.dart';
+import 'package:voxeldash/pages/server/plugins.dart';
 import 'package:voxeldash/util/anim/handler.dart';
 import 'package:voxeldash/util/data/api.dart';
 import 'package:voxeldash/util/widgets/buttons.dart';
@@ -127,35 +130,53 @@ class ServerInfo extends StatelessWidget {
 
                                 //Players
                                 ListTile(
+                                  onTap: () {
+                                    if (data.players.isNotEmpty) {
+                                      Get.to(
+                                        () => ServerPlayers(
+                                          players: data.players,
+                                        ),
+                                      );
+                                    }
+                                  },
                                   title: const Text("Players"),
                                   trailing: Text(
                                     "${data.players.length} / ${data.maxPlayers}",
-                                    style: const TextStyle(
-                                      decoration: TextDecoration.underline,
-                                    ),
                                   ),
                                 ),
 
                                 //Plugins
                                 ListTile(
+                                  onTap: () {
+                                    if (data.plugins.isNotEmpty) {
+                                      Get.to(
+                                        () => ServerPlugins(
+                                          plugins: data.plugins,
+                                        ),
+                                      );
+                                    }
+                                  },
                                   title: const Text("Plugins"),
-                                  trailing: Text(
-                                    "${data.plugins.length}",
-                                    style: const TextStyle(
-                                      decoration: TextDecoration.underline,
-                                    ),
-                                  ),
+                                  trailing: Text("${data.plugins.length}"),
                                 ),
 
                                 //Mods
                                 ListTile(
-                                  title: const Text("Mods"),
-                                  trailing: Text(
-                                    "${data.mods.length}",
-                                    style: const TextStyle(
-                                      decoration: TextDecoration.underline,
+                                  onTap: () {
+                                    if (data.mods.isNotEmpty) {
+                                      Get.to(
+                                        () => ServerMods(mods: data.mods),
+                                      );
+                                    }
+                                  },
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(14.0),
+                                      bottomRight: Radius.circular(14.0),
                                     ),
                                   ),
+                                  title: const Text("Mods"),
+                                  trailing: Text("${data.mods.length}"),
                                 ),
                               ],
                             ),
