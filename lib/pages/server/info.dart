@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/route_manager.dart';
 import 'package:voxeldash/pages/server/mods.dart';
@@ -6,57 +7,113 @@ import 'package:voxeldash/pages/server/players.dart';
 import 'package:voxeldash/pages/server/plugins.dart';
 import 'package:voxeldash/util/anim/handler.dart';
 import 'package:voxeldash/util/data/api.dart';
+import 'package:voxeldash/util/models/server.dart';
 import 'package:voxeldash/util/widgets/buttons.dart';
 import 'package:voxeldash/util/widgets/main.dart';
 
-class ServerInfo extends StatelessWidget {
+class ServerInfo extends StatefulWidget {
   const ServerInfo({
     super.key,
     required this.server,
     required this.isBedrock,
   });
 
-  ///Server
+  /// Server
   final String server;
 
-  ///Bedrock
+  /// Bedrock
   final bool isBedrock;
+
+  @override
+  State<StatefulWidget> createState() => _ServerInfoState();
+}
+
+class _ServerInfoState extends State<ServerInfo> {
+  bool _showSaveButton = false;
+  Future<ServerData>? _serverDataFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _serverDataFuture = _fetchServerData(); // Initialize the future once
+  }
+
+  Future<ServerData> _fetchServerData() async {
+    final data = await API.serverData(
+      type: widget.isBedrock ? ServerType.bedrock : ServerType.java,
+      server: widget.server,
+    );
+    setState(() {
+      _showSaveButton = true;
+    });
+    return data;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MainWidgets.appBar(title: const Text("Server Info")),
+      appBar: MainWidgets.appBar(
+        title: const Text("Server Info"),
+        actions: [
+          AnimatedOpacity(
+            opacity: _showSaveButton ? 1.0 : 0.0,
+            duration: const Duration(milliseconds: 500),
+            child: Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: Buttons.icon(
+                icon: Ionicons.ios_download_outline,
+                onTap: () {
+                  Get.defaultDialog(
+                    barrierDismissible: false,
+                    title: "Save Server?",
+                    content: Text(
+                      "Would you like to save this Server?",
+                      style: TextStyle(
+                        color: Theme.of(context).iconTheme.color,
+                      ),
+                    ),
+                    titleStyle: TextStyle(
+                      color: Theme.of(context).iconTheme.color,
+                    ),
+                    cancel: Buttons.text(
+                      text: "No",
+                      onTap: () => Get.back(),
+                    ),
+                    confirm: Buttons.elevated(
+                      text: "Save",
+                      onTap: () async {
+                        Get.back();
+                        final serverData = await _serverDataFuture;
+                        await API.saveServer(server: serverData!);
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            //Animation
             Center(child: AnimHandler.asset(animation: "server")),
-
-            //Server Data
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Card(
-                  child: FutureBuilder(
-                    future: API.serverData(
-                      type: isBedrock ? ServerType.bedrock : ServerType.java,
-                      server: server,
-                    ),
+                  child: FutureBuilder<ServerData>(
+                    future: _serverDataFuture,
                     builder: (context, snapshot) {
-                      //Connection State
                       if (snapshot.connectionState == ConnectionState.done) {
-                        //Data
                         final data = snapshot.data;
-
-                        //Check Data
                         if (data != null) {
                           return SingleChildScrollView(
                             physics: const BouncingScrollPhysics(),
                             child: Column(
                               children: [
-                                //Online Status
                                 ListTile(
                                   title: const Text("Online"),
                                   trailing: Container(
@@ -70,44 +127,30 @@ class ServerInfo extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-
-                                //Hostname
                                 ListTile(
                                   title: const Text("Hostname"),
                                   trailing: Text(data.hostname),
                                 ),
-
-                                //Port
                                 ListTile(
                                   title: const Text("Port"),
                                   trailing: Text(data.port.toString()),
                                 ),
-
-                                //Minecraft Version
                                 ListTile(
                                   title: const Text("Version"),
                                   trailing: Text(data.version),
                                 ),
-
-                                //Software
                                 ListTile(
                                   title: const Text("Software"),
                                   trailing: Text(data.software),
                                 ),
-
-                                //Game Mode
                                 ListTile(
                                   title: const Text("Game Mode"),
                                   trailing: Text(data.gameMode),
                                 ),
-
-                                //Server ID
                                 ListTile(
                                   title: const Text("Server ID"),
                                   trailing: Text(data.serverID),
                                 ),
-
-                                //EULA Blocked
                                 ListTile(
                                   title: const Text("EULA Blocked"),
                                   trailing: Container(
@@ -121,22 +164,15 @@ class ServerInfo extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-
-                                //MOTD
                                 ListTile(
                                   title: const Text("MOTD"),
                                   trailing: HtmlWidget(data.motd),
                                 ),
-
-                                //Players
                                 ListTile(
                                   onTap: () {
                                     if (data.players.isNotEmpty) {
-                                      Get.to(
-                                        () => ServerPlayers(
-                                          players: data.players,
-                                        ),
-                                      );
+                                      Get.to(() =>
+                                          ServerPlayers(players: data.players));
                                     }
                                   },
                                   title: const Text("Players"),
@@ -144,29 +180,20 @@ class ServerInfo extends StatelessWidget {
                                     "${data.players.length} / ${data.maxPlayers}",
                                   ),
                                 ),
-
-                                //Plugins
                                 ListTile(
                                   onTap: () {
                                     if (data.plugins.isNotEmpty) {
-                                      Get.to(
-                                        () => ServerPlugins(
-                                          plugins: data.plugins,
-                                        ),
-                                      );
+                                      Get.to(() =>
+                                          ServerPlugins(plugins: data.plugins));
                                     }
                                   },
                                   title: const Text("Plugins"),
                                   trailing: Text("${data.plugins.length}"),
                                 ),
-
-                                //Mods
                                 ListTile(
                                   onTap: () {
                                     if (data.mods.isNotEmpty) {
-                                      Get.to(
-                                        () => ServerMods(mods: data.mods),
-                                      );
+                                      Get.to(() => ServerMods(mods: data.mods));
                                     }
                                   },
                                   shape: const RoundedRectangleBorder(
@@ -182,7 +209,6 @@ class ServerInfo extends StatelessWidget {
                             ),
                           );
                         } else {
-                          //Failed to Get Data
                           return Center(
                             child: Text(
                               "Failed to Get Data\nMaybe Try Again?",
@@ -194,7 +220,6 @@ class ServerInfo extends StatelessWidget {
                           );
                         }
                       } else {
-                        //Loading
                         return const Center(
                           child: CircularProgressIndicator(),
                         );

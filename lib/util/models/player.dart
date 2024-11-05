@@ -15,4 +15,22 @@ class PlayerData {
     required this.username,
     required this.skinURL,
   });
+
+  ///`PlayerData` to JSON Object
+  Map<String, dynamic> toJSON() {
+    return {
+      "uuid": uuid,
+      "username": username,
+      "skinURL": skinURL,
+    };
+  }
+
+  ///JSON Object to `PlayerData`
+  factory PlayerData.fromJSON(Map<String, dynamic> json) {
+    return PlayerData(
+      uuid: json["uuid"] ?? "Unknown",
+      username: json["username"] ?? "Unknown",
+      skinURL: json["skinURL"] ?? "",
+    );
+  }
 }

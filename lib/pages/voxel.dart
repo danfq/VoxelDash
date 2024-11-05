@@ -14,9 +14,6 @@ class VoxelDash extends StatefulWidget {
 }
 
 class _VoxelDashState extends State<VoxelDash> {
-  ///Dark Mode
-  bool _darkMode = ThemeController.current(context: Get.context!);
-
   ///Navigation Index
   int _navIndex = 0;
 
@@ -48,15 +45,10 @@ class _VoxelDashState extends State<VoxelDash> {
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
             child: DayNightSwitcherIcon(
-              isDarkModeEnabled: _darkMode,
+              isDarkModeEnabled: ThemeController.current(context: context),
               onStateChanged: (mode) {
                 //Change Theme
                 ThemeController.setAppearance(context: context, mode: mode);
-
-                //Update UI
-                setState(() {
-                  _darkMode = mode;
-                });
               },
             ),
           ),

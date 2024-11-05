@@ -67,4 +67,52 @@ class ServerData {
     required this.plugins,
     required this.mods,
   });
+
+  ///`ServerData` to JSON Object
+  Map<String, dynamic> toJSON() {
+    return {
+      "hostname": hostname,
+      "ip": ip,
+      "port": port,
+      "online": online,
+      "version": version,
+      "icon": icon,
+      "software": software,
+      "gameMode": gameMode,
+      "serverID": serverID,
+      "eulaBlocked": eulaBlocked,
+      "motd": motd,
+      "players": players.map((player) => player.toJSON()).toList(),
+      "maxPlayers": maxPlayers,
+      "plugins": plugins.map((plugin) => plugin.toJSON()).toList(),
+      "mods": mods.map((mod) => mod.toJSON()).toList(),
+    };
+  }
+
+  ///JSON Object to `ServerData`
+  factory ServerData.fromJSON(Map<dynamic, dynamic> json) {
+    return ServerData(
+      hostname: json["hostname"] ?? "Unknown",
+      ip: json["ip"] ?? "Unknown",
+      port: json["port"] ?? 0,
+      online: json["online"] ?? false,
+      version: json["version"] ?? "Unknown",
+      icon: json["icon"] ?? "",
+      software: json["software"] ?? "Unknown",
+      gameMode: json["gameMode"] ?? "Unknown",
+      serverID: json["serverID"] ?? "Unknown",
+      eulaBlocked: json["eulaBlocked"] ?? false,
+      motd: json["motd"] ?? "",
+      players: (json["players"] as List? ?? [])
+          .map((item) => PlayerData.fromJSON(item))
+          .toList(),
+      maxPlayers: json["maxPlayers"] ?? 0,
+      plugins: (json["plugins"] as List? ?? [])
+          .map((item) => PluginData.fromJSON(item))
+          .toList(),
+      mods: (json["mods"] as List? ?? [])
+          .map((item) => ModData.fromJSON(item))
+          .toList(),
+    );
+  }
 }

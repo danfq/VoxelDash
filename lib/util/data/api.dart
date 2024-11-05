@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:retry/retry.dart';
 import 'package:http/http.dart' as http;
+import 'package:voxeldash/util/data/local.dart';
 import 'package:voxeldash/util/handlers/local_notif.dart';
 import 'package:voxeldash/util/models/mod.dart';
 import 'package:voxeldash/util/models/player.dart';
@@ -20,10 +21,6 @@ class API {
 
   ///Bedrock Endpoint
   static const String _bedrockEndpoint = "https://api.mcsrvstat.us/bedrock/3";
-
-  ///Mojang Skin API Endpoint
-  static const String _mojangEndpoint =
-      "https://sessionserver.mojang.com/session/minecraft/profile/";
 
   ///Retry Options
   static const _retryOptions = RetryOptions(maxAttempts: 5);
@@ -132,6 +129,39 @@ class API {
 
     //Return Server Data
     return parsedData;
+  }
+
+  ///Save Server
+  static Future<void> saveServer({required ServerData server}) async {
+    //Saved Servers
+    final List<dynamic> servers =
+        LocalData.boxData(box: "servers")["list"] ?? [];
+
+    //Check for Same Hostname
+    final bool serverExists = servers.any((savedServer) =>
+        savedServer is Map<String, dynamic> &&
+        savedServer["hostname"] == server.hostname);
+
+    //Check if Server is Already Present
+    if (serverExists) {
+      //Notify User
+      LocalNotif.show(
+        title: "Hmm...",
+        message: "'${server.hostname} Already Saved'",
+      );
+    } else {
+      //Add Server to List
+      servers.add(server.toJSON());
+
+      //Update List
+      await LocalData.setData(box: "servers", data: {"list": servers});
+
+      //Notify User
+      LocalNotif.show(
+        title: "Server Saved",
+        message: "The server '${server.hostname}' has been successfully added.",
+      );
+    }
   }
 
   ///Fetch Player Skin URL based on UUIS
