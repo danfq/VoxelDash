@@ -121,9 +121,12 @@ class _ServerPlayersState extends State<ServerPlayers>
                           ),
 
                           //Skin
-                          Image.network(
-                            player.skinURL,
-                            height: 240.0,
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Image.network(
+                              player.skinURL,
+                              height: 240.0,
+                            ),
                           ),
                         ],
                       ),

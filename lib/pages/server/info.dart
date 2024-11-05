@@ -183,10 +183,13 @@ class ServerInfo extends StatelessWidget {
                           );
                         } else {
                           //Failed to Get Data
-                          return const Center(
+                          return Center(
                             child: Text(
                               "Failed to Get Data\nMaybe Try Again?",
                               textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Theme.of(context).iconTheme.color,
+                              ),
                             ),
                           );
                         }
