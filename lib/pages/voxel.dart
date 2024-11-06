@@ -1,9 +1,12 @@
 import 'package:day_night_switcher/day_night_switcher.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/route_manager.dart';
 import 'package:voxeldash/pages/home/search.dart';
 import 'package:voxeldash/pages/home/servers.dart';
+import 'package:voxeldash/pages/settings/settings.dart';
 import 'package:voxeldash/util/themes/controller.dart';
+import 'package:voxeldash/util/widgets/buttons.dart';
 import 'package:voxeldash/util/widgets/main.dart';
 
 class VoxelDash extends StatefulWidget {
@@ -44,12 +47,9 @@ class _VoxelDashState extends State<VoxelDash> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
-            child: DayNightSwitcherIcon(
-              isDarkModeEnabled: ThemeController.current(context: context),
-              onStateChanged: (mode) {
-                //Change Theme
-                ThemeController.setAppearance(context: context, mode: mode);
-              },
+            child: Buttons.icon(
+              icon: Ionicons.ios_settings_outline,
+              onTap: () => Get.to(() => const Settings()),
             ),
           ),
         ],

@@ -29,6 +29,8 @@ dependencies:
   day_night_switcher: ^0.2.0+1
   future_progress_dialog: ^0.2.1
   flutter_widget_from_html: ^0.15.2
+  settings_ui: ^2.0.2
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:
@@ -45,3 +47,6 @@ flutter:
 
     # Animations
     - assets/anim/
+
+    # Images
+    - assets/img/

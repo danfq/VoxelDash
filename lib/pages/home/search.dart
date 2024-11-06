@@ -45,12 +45,7 @@ class SearchPage extends StatelessWidget {
                 );
               },
             ),
-            Text(
-              "Bedrock Server",
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
+            const Text("Bedrock Server"),
           ],
         ),
 

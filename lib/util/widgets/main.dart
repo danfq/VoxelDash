@@ -82,6 +82,7 @@ class MainWidgets {
       return ClipRRect(
         borderRadius: const BorderRadius.vertical(top: Radius.circular(14.0)),
         child: CupertinoTabBar(
+          activeColor: Theme.of(Get.context!).iconTheme.color,
           currentIndex: navIndex,
           onTap: (index) {
             onChanged(index);
