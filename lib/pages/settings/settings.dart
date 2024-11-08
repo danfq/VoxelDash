@@ -88,7 +88,7 @@ class _SettingsState extends State<Settings> {
                   title: const Text("Licenses"),
                   onPressed: (context) => Get.to(
                     () => LicensePage(
-                      applicationName: "Uncaught Exception",
+                      applicationName: "VoxelDash",
                       applicationIcon: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ClipRRect(

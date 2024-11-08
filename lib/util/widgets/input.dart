@@ -58,11 +58,7 @@ class _InputState extends State<Input> {
         controller: widget.controller,
         placeholder: widget.placeholder,
         padding: const EdgeInsets.all(14.0),
-        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: ThemeController.current(context: Get.context!)
-                  ? Colors.white
-                  : Colors.black,
-            ),
+        style: Theme.of(context).textTheme.bodyMedium,
         textAlign:
             widget.centerPlaceholder ? TextAlign.center : TextAlign.start,
         decoration: BoxDecoration(

@@ -10,7 +10,7 @@ class Themes {
       secondary: const Color(0xFFE91E63),
     ),
     textTheme: GoogleFonts.poppinsTextTheme().copyWith(
-      headlineSmall: const TextStyle(color: Colors.white),
+      headlineSmall: const TextStyle(color: Colors.black),
       bodyMedium: const TextStyle(color: Colors.black),
     ),
   );

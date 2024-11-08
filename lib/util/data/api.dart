@@ -164,10 +164,30 @@ class API {
     }
   }
 
+  ///Remove Server
+  static Future<void> removeServer({required String hostname}) async {
+    //Servers
+    final List<dynamic> servers =
+        LocalData.boxData(box: "servers")["list"] ?? [];
+
+    //Remove Server
+    servers.removeWhere((item) => item["hostname"] == hostname);
+
+    //Update Servers
+    await LocalData.updateValue(
+      box: "servers",
+      item: "list",
+      value: servers,
+    );
+
+    //Notify User
+    LocalNotif.show(title: "Done!", message: "Server Removed!");
+  }
+
   ///Fetch Player Skin URL based on UUIS
   static Future<String?> _playerSkin(String uuid) async {
     try {
-      //Mojang Request
+      //Request
       final response = await _retryOptions.retry(
         () => http.get(
           Uri.parse("https://crafatar.com/renders/body/$uuid"),
