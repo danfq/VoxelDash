@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:get/route_manager.dart';
-import 'package:voxeldash/util/themes/controller.dart';
 
 class Input extends StatefulWidget {
   const Input({
