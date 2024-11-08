@@ -13,8 +13,8 @@ class MyServers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Servers
-    final List<ServerData> servers =
-        (LocalData.boxData(box: "servers")["list"] as List<dynamic>)
+    final List<dynamic> servers =
+        (LocalData.boxData(box: "servers")["list"] ?? [])
             .map((item) => ServerData.fromJSON(item))
             .toList();
 
@@ -151,7 +151,13 @@ class MyServers extends StatelessWidget {
             ),
           )
         : Center(
-            child: AnimHandler.asset(animation: "empty"),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AnimHandler.asset(animation: "empty", reverse: true),
+                const Text("You Have No Servers"),
+              ],
+            ),
           );
   }
 }

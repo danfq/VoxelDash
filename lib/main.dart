@@ -2,7 +2,6 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:toastification/toastification.dart';
-import 'package:voxeldash/pages/voxel.dart';
 import 'package:voxeldash/util/handlers/main.dart';
 import 'package:voxeldash/util/themes/themes.dart';
 
