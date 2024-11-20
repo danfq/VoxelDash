@@ -35,7 +35,7 @@ class _ServerInfoState extends State<ServerInfo> {
   @override
   void initState() {
     super.initState();
-    _serverDataFuture = _fetchServerData(); // Initialize the future once
+    _serverDataFuture = _fetchServerData();
   }
 
   Future<ServerData> _fetchServerData() async {
@@ -61,7 +61,7 @@ class _ServerInfoState extends State<ServerInfo> {
             child: Padding(
               padding: const EdgeInsets.only(right: 10.0),
               child: Buttons.icon(
-                icon: Ionicons.ios_download_outline,
+                icon: Ionicons.ios_star_outline,
                 onTap: () {
                   Get.defaultDialog(
                     barrierDismissible: false,

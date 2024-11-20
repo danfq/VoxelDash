@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:get/route_manager.dart';
-import 'package:voxeldash/util/themes/controller.dart';
 
 class Input extends StatefulWidget {
   const Input({
@@ -58,11 +56,7 @@ class _InputState extends State<Input> {
         controller: widget.controller,
         placeholder: widget.placeholder,
         padding: const EdgeInsets.all(14.0),
-        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: ThemeController.current(context: Get.context!)
-                  ? Colors.white
-                  : Colors.black,
-            ),
+        style: Theme.of(context).textTheme.bodyMedium,
         textAlign:
             widget.centerPlaceholder ? TextAlign.center : TextAlign.start,
         decoration: BoxDecoration(

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:get/route_manager.dart';
 import 'package:voxeldash/pages/server/info.dart';
-import 'package:voxeldash/util/data/api.dart';
 import 'package:voxeldash/util/widgets/buttons.dart';
 import 'package:voxeldash/util/widgets/input.dart';
 
@@ -27,6 +25,7 @@ class SearchPage extends StatelessWidget {
           controller: _searchController,
           placeholder: "Hostname or IP",
           centerPlaceholder: true,
+          backgroundColor: Colors.grey.withOpacity(0.6),
         ),
 
         //Bedrock Check
