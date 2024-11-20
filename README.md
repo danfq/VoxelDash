@@ -1,16 +1,17 @@
-# voxeldash
+# VoxelDash
 
-A new Flutter project.
+`VoxelDash` is a one-stop-app for managing Minecraft Servers.
 
-## Getting Started
+## How to Use
 
-This project is a starting point for a Flutter application.
+1. Download the App from the [Releases](https://github.com/danfq/VoxelDash/releases) page.
 
-A few resources to get you started if this is your first Flutter project:
+2. Depending on your OS, sideload the APK or IPA file.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+3. Open the App and enjoy!
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## License
+
+This project is Open Source and licensed under the [GNU GPLv3 License](https://choosealicense.com/licenses/gpl-3.0/).
+
+This means you can use the App for free, but if you make any changes to the code, you must also release your changes under the same license.

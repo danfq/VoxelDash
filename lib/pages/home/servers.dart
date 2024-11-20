@@ -12,13 +12,13 @@ class MyServers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Servers
+    //Servers
     final List<ServerData> servers =
         (LocalData.boxData(box: "servers")["list"] as List<dynamic>)
             .map((item) => ServerData.fromJSON(item))
             .toList();
 
-    // List
+    //List
     return servers.isNotEmpty
         ? Padding(
             padding: const EdgeInsets.all(20.0),
