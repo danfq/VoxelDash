@@ -16,6 +16,9 @@ class ServerData {
   ///Online Status
   final bool online;
 
+  ///Bedrock
+  final bool isBedrock;
+
   ///Version
   final String version;
 
@@ -55,6 +58,7 @@ class ServerData {
     required this.ip,
     required this.port,
     required this.online,
+    required this.isBedrock,
     required this.version,
     required this.icon,
     required this.software,
@@ -75,6 +79,7 @@ class ServerData {
       "ip": ip,
       "port": port,
       "online": online,
+      "isBedrock": isBedrock,
       "version": version,
       "icon": icon,
       "software": software,
@@ -96,6 +101,7 @@ class ServerData {
       ip: json["ip"] ?? "Unknown",
       port: json["port"] ?? 0,
       online: json["online"] ?? false,
+      isBedrock: json["isBedrock"] ?? false,
       version: json["version"] ?? "Unknown",
       icon: json["icon"] ?? "",
       software: json["software"] ?? "Unknown",

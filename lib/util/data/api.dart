@@ -94,6 +94,7 @@ class API {
       ip: data["ip"] ?? "Undetermined",
       port: data["port"] ?? 0,
       online: data["online"],
+      isBedrock: type == ServerType.bedrock,
       version: data["version"] ?? "Undetermined",
       icon: data["icon"] ?? "",
       software: data["software"] ?? "Unspecified",
